@@ -1,0 +1,109 @@
+import java.util.*;
+
+class Product {
+    int id;
+    String name;
+    double price;
+    int quantity;
+
+    Product(int id, String name, double price, int quantity) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+        this.quantity = quantity;
+    }
+}
+
+public class GroceryStoreManagement {
+    static ArrayList<Product> products = new ArrayList<>();
+    static Scanner sc = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        int choice;
+
+        do {
+            System.out.println("\n===== Grocery Store Management =====");
+            System.out.println("1. Add Product");
+            System.out.println("2. View Products");
+            System.out.println("3. Purchase Product");
+            System.out.println("4. Exit");
+            System.out.print("Enter choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1:
+                    addProduct();
+                    break;
+                case 2:
+                    viewProducts();
+                    break;
+                case 3:
+                    purchaseProduct();
+                    break;
+                case 4:
+                    System.out.println("Thank you!");
+                    break;
+                default:
+                    System.out.println("Invalid choice!");
+            }
+        } while (choice != 4);
+    }
+
+    static void addProduct() {
+        System.out.print("Enter Product ID: ");
+        int id = sc.nextInt();
+        sc.nextLine();
+
+        System.out.print("Enter Product Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Price: ");
+        double price = sc.nextDouble();
+
+        System.out.print("Enter Quantity: ");
+        int quantity = sc.nextInt();
+
+        products.add(new Product(id, name, price, quantity));
+        System.out.println("Product added successfully!");
+    }
+
+    static void viewProducts() {
+        if (products.isEmpty()) {
+            System.out.println("No products available.");
+            return;
+        }
+
+        System.out.println("\nID\tName\tPrice\tQuantity");
+        for (Product p : products) {
+            System.out.println(p.id + "\t" + p.name + "\t" + p.price + "\t" + p.quantity);
+        }
+    }
+
+    static void purchaseProduct() {
+        System.out.print("Enter Product ID to purchase: ");
+        int id = sc.nextInt();
+
+        for (Product p : products) {
+            if (p.id == id) {
+                System.out.print("Enter quantity to buy: ");
+                int qty = sc.nextInt();
+
+                if (qty <= p.quantity) {
+                    double total = qty * p.price;
+                    p.quantity -= qty;
+
+                    System.out.println("\n----- BILL -----");
+                    System.out.println("Product: " + p.name);
+                    System.out.println("Price: " + p.price);
+                    System.out.println("Quantity: " + qty);
+                    System.out.println("Total: " + total);
+                } else {
+                    System.out.println("Insufficient stock!");
+                }
+                return;
+            }
+        }
+
+        System.out.println("Product not found!");
+    }
+}
